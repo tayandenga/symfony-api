@@ -1,0 +1,102 @@
+resources:
+  App\Entity\Cart:
+    collectionOperations:
+      post:
+        method: 'POST'
+      get:
+        method: 'GET'
+    itemOperations:
+      get:
+        method: 'GET'
+      delete:
+        method: 'DELETE'
+      add_product:
+        method: 'POST'
+        path: '/carts/{id}'
+        controller: App\Controller\CartController
+        input: App\DataTransformer\CartMember
+        output: App\Entity\Cart
+        openapi_context:
+          summary: 'Assigns a Product resource within selected Cart resource.'
+          description: 'Assigns a Product resource within selected Cart resource.'
+          parameters:
+            - in: path
+              name: id
+              required: true
+              type: integer
+              description: 'Cart resource identifier'
+          responses:
+            201:
+              description: 'Product resource assigned'
+            404:
+              description: 'Product resource not found or Cart resource not found'
+            417:
+              description: 'Product resource limit (3) reached'
+      update_product:
+        method: 'PUT'
+        path: '/carts/{id}'
+        controller: App\Controller\CartController
+        input: App\DataTransformer\CartMember
+        output: App\Entity\Cart
+        openapi_context:
+          summary: 'Updates the Product resource within selected Cart resource.'
+          description: 'Updates the Product resource within selected Cart resource.'
+          parameters:
+            - in: path
+              name: id
+              required: true
+              type: integer
+              description: 'Cart resource identifier'
+          requestBody:
+            required: true
+            description: 'The Product resource in Cart resource.'
+            content:
+              application/ld+json:
+                schema:
+                  $ref: '#/components/schemas/Cart.CartMember'
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Cart.CartMember'
+              text/html:
+                schema:
+                  $ref: '#/components/schemas/Cart.CartMember'
+          responses:
+            200:
+              description: 'Product resource updated'
+            404:
+              description: 'Product resource not found or Cart resource not found'
+            417:
+              description: 'Product resource limit (3) reached'
+      remove_product:
+        method: 'PATCH'
+        path: '/carts/{id}'
+        controller: App\Controller\CartController
+        input: App\DataTransformer\CartMember
+        output: App\Entity\Cart
+        openapi_context:
+          summary: 'Unassigns the Product resource within selected Cart resource.'
+          description: 'Unassigns the Product resource within selected Cart resource.'
+          parameters:
+            - in: path
+              name: id
+              required: true
+              type: integer
+              description: 'Cart resource identifier'
+          requestBody:
+            required: true
+            description: 'The Product resource in Cart resource.'
+            content:
+              application/ld+json:
+                schema:
+                  $ref: '#/components/schemas/Cart.CartMember'
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Cart.CartMember'
+              text/html:
+                schema:
+                  $ref: '#/components/schemas/Cart.CartMember'
+          responses:
+            200:
+              description: 'Product resource unassigned'
+            404:
+              description: 'Product resource not found or Cart resource not found'
